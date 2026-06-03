@@ -42,31 +42,34 @@ pipeline {
             }
         }
 
-        // stage('Docker Build') {
-        //     steps {
-        //         sh 'docker build -t $IMAGE_NAME .'
-        //     }
-        // }
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t student-app .'
+            }
+        }
 
-        // stage('Docker Push') {
+        stage('Docker Push') {
 
-        //     steps {
+            steps {
 
-        //         withCredentials([
-        //             usernamePassword(
-        //                 credentialsId: 'dockerhub',
-        //                 usernameVariable: 'DOCKER_USER',
-        //                 passwordVariable: 'DOCKER_PASS'
-        //             )
-        //         ]) {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub',
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_PASS'
+                    )
+                ]) {
 
-        //             sh '''
-        //             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-        //             docker push $IMAGE_NAME
-        //             '''
-        //         }
-        //     }
-        // }
+                    sh '''
+                    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+
+                    docker tag student-app $DOCKER_USER/student-app:latest
+
+                    docker push $DOCKER_USER/student-app:latest
+                    '''
+                }
+            }
+        }
     }
 
     post {
