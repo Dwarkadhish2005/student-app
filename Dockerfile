@@ -1,3 +1,7 @@
-FROM eclipse-temurin: 21-jre
-COPY target/student-app.jar app.jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
+FROM eclipse-temurin:26-jre
+
+WORKDIR /app
+
+COPY target/student-app-1.0-SNAPSHOT.jar app.jar
+
+CMD ["java","-jar","app.jar"]
